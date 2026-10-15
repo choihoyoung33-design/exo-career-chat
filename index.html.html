@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="referrer" content="no-referrer"/>
+<meta name="robots" content="noindex, nofollow"/>
+<title>EXO CAREER VISA | SOLAR ATLAS 2056</title>
+<link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+<style>
+:root{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif;color:#eaf3f7;background:#0b1727}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 0%,#193d57 0, #0b1727 56%);min-height:100vh}
+header{padding:24px max(18px,calc((100vw - 900px)/2));border-bottom:1px solid #37586a;display:flex;justify-content:space-between;gap:16px;align-items:center}
+header strong{letter-spacing:.13em}header span{font-size:12px;color:#a5becd}
+main{max-width:900px;margin:auto;padding:30px 18px 70px}
+.eyebrow{font-size:12px;color:#8dd5e4;letter-spacing:.18em;font-weight:700}h1{font-size:clamp(28px,5vw,42px);margin:12px 0}p{line-height:1.75;color:#c4d3df}
+.panel{padding:26px;background:#f6f7f5;color:#1b3142;border-radius:16px;margin-top:24px;box-shadow:0 12px 36px #0005}.panel p{color:#4c5b64}
+button{background:#236c88;color:white;border:none;padding:13px 24px;font-size:16px;border-radius:9px;cursor:pointer;font-weight:700}
+button:disabled{opacity:.6;cursor:wait}
+#chatWrap{display:none;margin-top:26px}#n8n-chat{width:100%;height:600px;min-height:600px;background:white;border-radius:14px;overflow:hidden}
+#n8n-chat .chat-window{height:100%;width:100%}
+.note{font-size:12px;color:#9ab0c0}
+</style>
+</head>
+<body>
+<header><strong>SOLAR ATLAS <span>2056</span></strong><span>EXO CAREER VISA · 이주 직업 심사관</span></header>
+<main>
+<div class="eyebrow">SECOND LIFE · NEW CAREER</div>
+<h1>새로운 행성에서도, 당신다운 일을.</h1>
+<p id="destination">이주 행성 정보를 확인하는 중입니다.</p>
+<div class="panel" id="consent">
+<h2 style="margin-top:0">직업 심사관과 대화해 볼까요?</h2>
+<p>5개의 질문을 통해 미래 직업 3개를 추천하고, 이후에도 선택한 행성의 음식·거주·취미·일상에 대해 계속 대화할 수 있습니다.</p>
+<p><strong>AI 이용 안내</strong><br>대화를 시작하면 선택한 행성·가상 주거지·옵션 코드와 이 채팅에 직접 입력한 텍스트가 n8n 및 연결된 AI 서비스로 전송됩니다. 이름·주소·연락처·건강정보 등 민감한 정보는 입력하지 마세요. 본 서비스는 2056년 창작 시뮬레이션이며 실제 취업/이주 승인이 아닙니다.</p>
+<button id="start">안내를 확인하고 챗봇 시작하기 →</button>
+</div>
+<div id="chatWrap">
+<p class="note">심사관에게 <strong>시작</strong>이라고 입력하면 다섯 가지 질문이 시작됩니다. 심사 이후에는 자유롭게 질문하세요.</p>
+<div id="n8n-chat"></div>
+</div>
+<p class="note" style="margin-top:22px">과학 자료는 기존 SOLAR ATLAS의 NASA 출처 기반이며, 2056년 도시와 직업은 가상 설정입니다. 이전 이주 보고서는 원래 탭에서 계속 확인할 수 있습니다.</p>
+</main>
+<script type="module">
+import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+const WEBHOOK_URL='https://lgknd-axb1.app.n8n.cloud/webhook/d162b32c-1879-454b-a805-1385ef8f933a/chat'; // Paste the Chat Trigger production chat webhook URL here.
+const query=new URLSearchParams(window.location.hash.slice(1));
+const valid=new Set(['mercury','venus','mars','jupiter','saturn','uranus','neptune']);
+const planet=valid.has(query.get('planet'))?query.get('planet'):'mars';
+const names={mercury:'수성',venus:'금성',mars:'화성',jupiter:'목성',saturn:'토성',uranus:'천왕성',neptune:'해왕성'};
+document.getElementById('destination').textContent=`배정된 행성: ${names[planet]} · 직업 심사 및 생활 상담`;
+const safe=(key)=>String(query.get(key)||'').replace(/[^a-z0-9-]/gi,'').slice(0,80);
+const meta={planetId:planet,homeId:safe('home'),viewId:safe('view'),planId:safe('plan'),shipId:safe('ship'),source:'solar-atlas-2056'};
+document.getElementById('start').addEventListener('click',async()=>{
+ if(WEBHOOK_URL==='YOUR_N8N_CHAT_WEBHOOK_URL'){
+  alert('관리자 설정이 필요합니다. HTML 안의 YOUR_N8N_CHAT_WEBHOOK_URL을 교체해 주세요.');return;
+ }
+ document.getElementById('consent').style.display='none';
+ document.getElementById('chatWrap').style.display='block';
+ createChat({
+  webhookUrl:WEBHOOK_URL,
+  mode:'fullscreen',
+  target:'#n8n-chat',
+  showWelcomeScreen:false,
+  loadPreviousSession:true,
+  metadata:meta,
+  initialMessages:[`반가워요. ${names[planet]}로 향하는 당신의 다음 일을 함께 찾아봐요. 채팅창에 '시작'이라고 입력해 주세요.`],
+  i18n:{en:{title:'EXO CAREER VISA',subtitle:'따뜻한 이주 심사관 · 미래 직업과 행성 생활',footer:'2056년 가상 시뮬레이션',getStarted:'대화 시작',inputPlaceholder:'여기에 메시지를 입력하세요...'}}
+ });
+});
+</script>
+</body>
+</html>
